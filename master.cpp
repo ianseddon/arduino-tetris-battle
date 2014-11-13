@@ -1,14 +1,8 @@
 #include <Arduino.h>
-#include <Adafruit_ST7735.h>
-#include <SPI.h>
 
 // Include our class files
 #include "game.h"
 #include "input.h"
-
-#define TFT_CS   6
-#define TFT_DC   7
-#define TFT_RST  8
 
 uint8_t state;
 
@@ -25,7 +19,9 @@ void setup() {
   Game *gameInstance = new Game();
 
   // Create the input handler
-  InputHandler *inputHandler = new InputHandler( );
+  InputHandler *inputHandler = new InputHandler();
+
+  state = GAME_PLAY_SINGLEPLAYER_STATE;
 
   /*
     The main gameloop
@@ -38,17 +34,17 @@ void setup() {
 
     // Read the input every frame
     inputHandler->readInput( );
-
+    
     switch ( state ) {
-
+      
     // Called each frame of the menu state
     case MENU_STATE:
       
       break;
-
+      
     // Called each frame of the singleplayer game
     case GAME_PLAY_SINGLEPLAYER_STATE:
-
+      
       gameInstance->handleInput( inputHandler );
       gameInstance->update();
       gameInstance->draw();
@@ -61,10 +57,14 @@ void setup() {
       gameInstance->handleInput( inputHandler );
       gameInstance->update();
       gameInstance->draw();
-
+      
       break;
 
-  }
+    }
+
+    //Serial.println( random( 0, 100 ) );
+
+    //    delay( 100 );
 
   }
 

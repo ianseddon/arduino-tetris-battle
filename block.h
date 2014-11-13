@@ -1,6 +1,8 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <Arduino.h>
+
 const int BLOCK_WIDTH = 8;
 const int BLOCK_HEIGHT = 8;
 
