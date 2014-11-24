@@ -5,7 +5,6 @@
 // Include our class files
 #include "game.h"
 #include "input.h"
-#include "block.h"
 
 #define TFT_CS   6
 #define TFT_DC   7
@@ -22,6 +21,7 @@ void setup() {
   // Set up serial logging
   Serial.begin(9600);
 
+  // Create the game instance (to be moved to a menu function?)
   Game *gameInstance = new Game();
 
   // Create the input handler
@@ -67,6 +67,10 @@ void setup() {
   }
 
   }
+
+  // Dealloc objects
+  delete gameInstance;
+  delete inputHandler;
 
 }
 
