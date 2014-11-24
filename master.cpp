@@ -3,6 +3,7 @@
 #include <SPI.h>
 
 // Include our class files
+#include "game.h"
 #include "input.h"
 #include "block.h"
 
@@ -20,6 +21,8 @@ void setup() {
 
   // Set up serial logging
   Serial.begin(9600);
+
+  Game *gameInstance = new Game();
 
   // Create the input handler
   InputHandler *inputHandler = new InputHandler( );
@@ -45,12 +48,20 @@ void setup() {
 
     // Called each frame of the singleplayer game
     case GAME_PLAY_SINGLEPLAYER_STATE:
-      
+
+      gameInstance->handleInput( inputHandler );
+      gameInstance->update();
+      gameInstance->draw();
+
       break;
 
     // Called each frame of the multiplayer game
     case GAME_PLAY_MULTIPLAYER_STATE:
-      
+
+      gameInstance->handleInput( inputHandler );
+      gameInstance->update();
+      gameInstance->draw();
+
       break;
 
   }
