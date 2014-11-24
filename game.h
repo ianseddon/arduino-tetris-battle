@@ -8,6 +8,7 @@
 #define GAME_H
 
 #include "input.h"
+#include "stage.h"
 
 class Game {
   
@@ -15,6 +16,8 @@ public:
   
   // Constructor
   Game();
+  // Destructor
+  ~Game();
 
   // Applies input to the game stage each frame
   void handleInput( InputHandler *ih );
@@ -27,6 +30,7 @@ public:
 
 private:
 
+  Stage *stage_;
   int speed_; // The speed multiplier that the game will run at. Default 1
 
 };
