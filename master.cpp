@@ -18,11 +18,11 @@ const uint8_t GAME_PLAY_MULTIPLAYER_STATE  = 2;
 
 void setup() {
 
-  // Set up pins for joystick select
-  pinMode(JOYSTICK_SEL, INPUT);
-  digitalWrite(JOYSTICK_SEL, HIGH);
+  // Set up serial logging
+  Serial.begin(9600);
+
   // Create the input handler
-  InputHandler *inputHandler = new InputHandler( analogRead(JOYSTICK_HORIZ), analogRead(JOYSTICK_VERT) );
+  InputHandler *inputHandler = new InputHandler( );
 
   /*
     The main gameloop
@@ -34,7 +34,7 @@ void setup() {
   while( 1 ) {
 
     // Read the input every frame
-    inputHandler->readInput( analogRead(JOYSTICK_HORIZ), analogRead(JOYSTICK_VERT), digitalRead(JOYSTICK_SEL) );
+    inputHandler->readInput( );
 
     switch ( state ) {
 

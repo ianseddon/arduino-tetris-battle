@@ -21,10 +21,10 @@ class InputHandler {
  public:
 
   // Constructor
- InputHandler( int hInputBase, int vInputBase ) : hInputBase_(hInputBase), vInputBase_(vInputBase) {}
+  InputHandler();
 
   // Read the input for this frame
-  void readInput( int hInput, int vInput, int sInput );
+  void readInput( );
 
   // Getters and setters
   bool left() const { return left_; }
@@ -45,34 +45,5 @@ class InputHandler {
   int vInputBase_; // Base value for vertical axis
 
 };
-
-void InputHandler::readInput( int hInput, int vInput, int sInput) {
-
-  // reset the input values
-  left_ = false;
-  right_ = false;
-  up_ = false;
-  down_ = false;
-
-  // If joystick is pressed down
-  if( vInput > vInputBase_ + JOYSTICK_DEAD_ZONE )
-    down_ = true;
-
-  // Otherwise, check if joystick is pressed up
-  else if( vInput < vInputBase_ - JOYSTICK_DEAD_ZONE )
-    up_ = true;
-
-  // If joystick is pressed left
-  if( hInput < hInputBase_ - JOYSTICK_DEAD_ZONE )
-    left_ = true;
-
-  // Otherwise, check if joystick is pressed right
-  else if( hInput > hInputBase_ + JOYSTICK_DEAD_ZONE )
-    right_ = true;
-
-  // Check if select is pressed
-  if( sInput == 0 )
-    select_ = true;
-}
 
 #endif
