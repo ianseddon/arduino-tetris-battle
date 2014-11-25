@@ -2,7 +2,7 @@
 #define STAGE_H
 
 #include <Arduino.h>
-//#include "block.h"
+#include "block.h"
 
 // Stage width / height in number of blocks
 const int STAGE_WIDTH = 10;
@@ -19,15 +19,18 @@ class Stage {
   Stage();
 
   // Did a buffer value change this frame?
-  bool shouldDraw( int x, int y ) { return ( blockBuffer_[y][x] != blockBuffer_last_[y][x] ); }
+  bool shouldDraw( int x, int y );
 
   // Getters for the buffer values
-  uint16_t getColor( int x, int y ) const { return blockBuffer_[y][x]; }
-  void setColor( int x, int y, uint16_t c ) { blockBuffer_[y][x] = c; }
+  uint16_t color( int x, int y ) const;
+  void color( int x, int y, uint16_t c ) { blockBuffer_[y][x] = c; }
   //uint16_t blockBuffer_last( int x, int y ) { return blockBuffer_last_[y][x]; }
 
-  // Update buffer
-  void updateBuffer();
+  // Setter for block
+  void block( Block *block ) { this->block_ = block; Serial.println("assigned"); };
+
+  // Copy current buffer to last buffer
+  void syncBuffers();
 
   // "Getters" for the const height/width values
   int width() const { return STAGE_WIDTH; }
@@ -36,12 +39,9 @@ class Stage {
   int blockHeight() const { return BLOCK_HEIGHT; }
 
  private:
-  
-  // The buffers for the controlled block -- REPLACE WITH A BLOCK INSTANCE
-  //uint16_t cBlockBuffer_front[STAGE_HEIGHT][STAGE_WIDTH];
-  //uint16_t cBlockBuffer_back[STAGE_HEIGHT][STAGE_WIDTH];
 
-  //Block *controlledBlock_;
+  // Pointer to the currently controlled block
+  Block *block_;
 
   // The buffer for the placed blocks
   uint16_t blockBuffer_[STAGE_HEIGHT][STAGE_WIDTH];

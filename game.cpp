@@ -22,6 +22,9 @@ Game::Game () {
   // Create a new block for the game
   block_ = new Block( 5, 0, colors[shape], shape );
 
+  // Register block with stage
+  stage_->block( block_ );
+
   // Do initial render of stage
   renderer_->initialRender( stage_ );
 

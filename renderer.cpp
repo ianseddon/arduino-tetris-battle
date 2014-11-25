@@ -37,12 +37,12 @@ void Renderer::render( Stage *stage ) {
 
       // draw the stage buffer
       if( stage->shouldDraw( x, y ) ) {
-	tft_.fillRect( x * stage->blockWidth() + 1, y * stage->blockHeight(), stage->blockWidth() - 1, stage->blockHeight() - 1, stage->getColor( x, y ) );
+	tft_.fillRect( x * stage->blockWidth() + 1, y * stage->blockHeight(), stage->blockWidth() - 1, stage->blockHeight() - 1, stage->color( x, y ) );
       }
     }
   }
 
-  stage->updateBuffer();
+  stage->syncBuffers();
 
 }
 
