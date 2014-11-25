@@ -1,5 +1,9 @@
 .emacs
+
+# Ignore the build files
 build-cli/
 build-cli/*
+
+# Ignore the emacs backup and autosave files
 [#]*[#]
 *[~]
