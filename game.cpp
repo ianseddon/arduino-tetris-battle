@@ -5,16 +5,18 @@
 
 // Movement timing
 unsigned long lastRotateTime;
-unsigned long rotateDelay = 200;
+unsigned long rotateDelay = 150;
 
 unsigned long lastMoveTime;
 unsigned long moveDelay = 50;
 
 unsigned long lastFallTime;
-unsigned long fallDelay = 300;
+const unsigned long REGULAR_FALL_DELAY = 400;
+const unsigned long FAST_FALL_DELAY = 50;
+unsigned long fallDelay = REGULAR_FALL_DELAY;
 
 unsigned long lastFpsDrawTime;
-unsigned long fpsDrawDelay = 100;
+unsigned long fpsDrawDelay = 200;
 
 /*
   The constructor for the game object
@@ -74,7 +76,11 @@ void Game::handleInput( InputHandler *ih ) {
   if( ih->down() ) {
 
     // Speed up the block falling
+    fallDelay = FAST_FALL_DELAY;
 
+  }
+  else {
+    fallDelay = REGULAR_FALL_DELAY;
   }
 
   // Handle joystick up
@@ -176,19 +182,40 @@ void Game::update( unsigned long dt ) {
 
       // Place the block
 
+      // Dealloc old block
+      delete block_;
+
+      int bType = random( 0, 7 );
+
+      // Create new block
+      block_ = new Block( 5, 0, colors[bType], bType );
+      // Register new block with stage
+      stage_->block( block_ );
+
     }
 
     // Update the last fall time
     lastFallTime = updateTime;
   }
 
-  // Draw the FPS
+  // Draw the text ui
   if( updateTime > lastFpsDrawTime + fpsDrawDelay ) {
+
+    int leftPos = stage_->width() * stage_->blockWidth() + 5;
+
     char fBuf[15];
     sprintf( fBuf, "%d", (int) ( 1000 / dt ) );
-    renderer_->fillRect( stage_->width() * stage_->blockWidth() + 5, 0, 20, 15, 0x000000 );
-    renderer_->drawText( stage_->width() * stage_->blockWidth() + 5, 3, fBuf );
+
+    renderer_->fillRect( leftPos, 0, 20, 15, 0x000000 );
+    renderer_->drawText( leftPos, 3, fBuf );
     renderer_->drawText( "fps" );
+
+    sprintf( fBuf, "%d", block_->x() );
+
+    renderer_->fillRect( leftPos, 25, 20, 15, 0x000000 );
+    renderer_->drawText( leftPos, 25, "x:" );
+    renderer_->drawText( fBuf );
+
     lastFpsDrawTime = updateTime;
   }
 
