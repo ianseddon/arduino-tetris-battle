@@ -62,10 +62,6 @@ void setup() {
 
     }
 
-    //Serial.println( random( 0, 100 ) );
-
-    //    delay( 100 );
-
   }
 
   // Dealloc objects

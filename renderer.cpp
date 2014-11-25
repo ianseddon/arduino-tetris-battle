@@ -32,6 +32,8 @@ void Renderer::initialRender( Stage *stage ) {
  */
 void Renderer::render( Stage *stage ) {
 
+  stage->composeBuffer();
+
   for( int x = 0; x < stage->width(); x++ ) {
     for( int y = 0; y < stage->height(); y++ ) {
 

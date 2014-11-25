@@ -21,16 +21,19 @@ class Stage {
   // Did a buffer value change this frame?
   bool shouldDraw( int x, int y );
 
+  // Compose the buffer for this frame from stage and block data
+  void composeBuffer();
+
+  // Copy this frame's buffer to last frame buffer
+  void syncBuffers();
+
   // Getters for the buffer values
-  uint16_t color( int x, int y ) const;
-  void color( int x, int y, uint16_t c ) { blockBuffer_[y][x] = c; }
+  uint16_t color( int x, int y ) const { return buffer_[y][x]; };
+  void color( int x, int y, uint16_t c ) { buffer_[y][x] = c; }
   //uint16_t blockBuffer_last( int x, int y ) { return blockBuffer_last_[y][x]; }
 
   // Setter for block
   void block( Block *block ) { this->block_ = block; Serial.println("assigned"); };
-
-  // Copy current buffer to last buffer
-  void syncBuffers();
 
   // "Getters" for the const height/width values
   int width() const { return STAGE_WIDTH; }
@@ -43,10 +46,13 @@ class Stage {
   // Pointer to the currently controlled block
   Block *block_;
 
-  // The buffer for the placed blocks
-  uint16_t blockBuffer_[STAGE_HEIGHT][STAGE_WIDTH];
-  // The buffer for the placed blocks in the previous frame
-  uint16_t blockBuffer_last_[STAGE_HEIGHT][STAGE_WIDTH];
+  // Placed blocks
+  uint16_t placedBlocks_[STAGE_HEIGHT][STAGE_WIDTH];
+
+  // The buffer for the stage
+  uint16_t buffer_[STAGE_HEIGHT][STAGE_WIDTH];
+  // The buffer for the stage in the previous frame
+  uint16_t buffer_last_[STAGE_HEIGHT][STAGE_WIDTH];
 
 };
 

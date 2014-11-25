@@ -49,7 +49,32 @@ Game::~Game () {
 }
 
 void Game::handleInput( InputHandler *ih ) {
-  
+
+  // Handle joystick down
+  if( ih->down() ) {
+    block_->y( block_->y() + 1 );
+  }
+
+  // Handle joystick up
+  if( ih->up() ) {
+    block_->y( block_->y() - 1 );
+  }
+
+  // Handle joystick left
+  if( ih->left() ) {
+    
+  }
+
+  // Handle joystick right
+  if( ih->right() ) {
+    
+  }
+
+  // Handle joystick select
+  if( ih->select() ) {
+    
+  }
+
 }
 
 void Game::update() {
