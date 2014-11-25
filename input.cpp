@@ -23,6 +23,7 @@ void InputHandler::readInput( ) {
   right_ = false;
   up_ = false;
   down_ = false;
+  select_ = false;
 
   // If joystick is pressed down
   if( vInput > vInputBase_ + JOYSTICK_DEAD_ZONE )
@@ -41,6 +42,6 @@ void InputHandler::readInput( ) {
     right_ = true;
 
   // Check if select is pressed
-  if( sInput == 0 )
+  if( sInput == LOW  )
     select_ = true;
 }
