@@ -9,6 +9,7 @@
 
 #include "input.h"
 #include "stage.h"
+#include "block.h"
 #include "renderer.h"
 
 class Game {
@@ -33,7 +34,8 @@ private:
 
   Renderer *renderer_; // The pointer to the renderer instance
   Stage *stage_;       // The pointer to the stage instance
-  
+  Block *block_;       // The pointer to the block instance
+
   int speed_; // The speed multiplier that the game will run at. Default 1
 
 };

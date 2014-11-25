@@ -3,8 +3,19 @@
 
 #include <Arduino.h>
 
-const int BLOCK_WIDTH = 8;
-const int BLOCK_HEIGHT = 8;
+//const int BLOCK_WIDTH = 8;
+//const int BLOCK_HEIGHT = 8;
+
+const uint16_t colors[7] = {
+  0xFFFF00, // O Block
+  0x00FFFF, // I Block
+  0x00FF00, // S Block
+  0xFF0000, // Z Block
+  0xFFA500, // L Block
+  0x0000FF, // J Block
+  0xA020F0  // T Block
+};
+
 
 const int OBlock = 0;
 const int IBlock = 1;

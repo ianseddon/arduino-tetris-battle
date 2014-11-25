@@ -17,6 +17,11 @@ Game::Game () {
   // Create a new stage for the game
   stage_ = new Stage();
 
+  int shape = random( 0, 7 );
+
+  // Create a new block for the game
+  block_ = new Block( 5, 0, colors[shape], shape );
+
   // Do initial render of stage
   renderer_->initialRender( stage_ );
 
@@ -28,6 +33,9 @@ Game::Game () {
   by the stage object and anything else we've allocated
  */
 Game::~Game () {
+
+  // Dealloc the block
+  delete block_;
 
   // Dealloc the stage
   delete stage_;
