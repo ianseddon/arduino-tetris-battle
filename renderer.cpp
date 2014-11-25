@@ -6,6 +6,9 @@ Renderer::Renderer( Adafruit_ST7735 tft ) : tft_(tft) {
   tft_.initR( INITR_BLACKTAB );
   tft_.fillScreen( tft_.Color565( 0x00, 0x00, 0x00 ) );
 
+  tft_.setCursor( 0, 0 );
+  tft_.setTextWrap( false );
+
 }
 
 void Renderer::initialRender( Stage *stage ) {
@@ -51,14 +54,6 @@ void Renderer::render( Stage *stage ) {
 }
 
 /*
-  Handles the rendering for a block object
-  and the erasure for the block at the previous frame
-*/
-//void Renderer::render( Block *block ) {
-//
-//}
-
-/*
   FillRect wrapper function
 */
 void Renderer::fillRect( int x, int y, int w, int h, uint16_t color ) {
@@ -78,4 +73,19 @@ void Renderer::drawVLine( int x, int y, int h, uint16_t color ) {
 */
 void Renderer::drawHLine( int x, int y, int w, uint16_t color ) {
   tft_.drawFastHLine( x, y, w, color );
+}
+
+/*
+  Wrapper for tft.println that allows us to draw to a coordinate on screen with only one call
+ */
+void Renderer::drawText( int x, int y, const char *s ) {
+  tft_.setCursor( x, y );
+  tft_.print( s );
+}
+
+/*
+  Wrapper for tft.println that continues to draw where the cursor was left
+ */
+void Renderer::drawText( const char *s ) {
+  tft_.print( s );
 }
