@@ -44,11 +44,21 @@ void Stage::syncBuffers() {
 }
 
 /*
-  Check if a Block b collides with the placed blocks
+  Check if a Block b collides with the placed blocks or with stage bounds
  */
 bool Stage::collides( Block *b ) {
-  
-  // Iterate through the block's bounds
+
+  // Make sure the block doesn't collide with x bounds
+  if( b->intersectsX( -1 ) || b->intersectsX( this->width() ) ) {
+    return true;
+  }
+
+  // Make sure the block doesn't collide with y bounds
+  if( b->intersectsX( -1 ) || b->intersectsY( this->height() ) ) {
+    return true;
+  }
+
+  // Iterate through the block's bounds to check for collision with placed blocks
   for( int x = -2; x < 2; x++ ) {
     for( int y = -1; y < 3; y++ ) {
       
@@ -56,7 +66,7 @@ bool Stage::collides( Block *b ) {
       if( b->intersects( b->x() + x, b->y() + y ) ) {
 	
 	// the block occupies these coords, so check if it hits a placed block
-	if ( placedBlocks_[y][x] != BG_COLOR ) {
+	if ( placedBlocks_[b->y() + y][b->x() + x] != BG_COLOR ) {
 	  // we hit a placed block so return true on collision check
 	  return true;
 	}
