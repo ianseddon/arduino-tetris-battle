@@ -1,9 +1,11 @@
 #include "renderer.h"
 
 Renderer::Renderer( Adafruit_ST7735 tft ) : tft_(tft) {
+
   // Set up TFT display
   tft_.initR( INITR_BLACKTAB );
-  tft_.fillScreen( tft.Color565( 0x00, 0x00, 0x00 ) );
+  tft_.fillScreen( tft_.Color565( 0x00, 0x00, 0x00 ) );
+
 }
 
 void Renderer::initialRender( Stage *stage ) {
