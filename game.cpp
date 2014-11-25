@@ -3,12 +3,23 @@
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
 
+// Movement timing
+unsigned long lastRotateTime;
+unsigned long rotateDelay = 200;
+
+unsigned long lastMoveTime;
+unsigned long moveDelay = 50;
+
+unsigned long lastFallTime;
+unsigned long fallDelay = 300;
+
 /*
   The constructor for the game object
   Called whenever we create a new game
 */
 Game::Game () {
 
+  // Initialize the display
   Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
 
   // Create a new renderer for the game
@@ -54,29 +65,57 @@ Game::~Game () {
  */
 void Game::handleInput( InputHandler *ih ) {
 
+  unsigned long inputTime = millis();
+
   // Handle joystick down
   if( ih->down() ) {
-    block_->y( block_->y() + 1 );
+
+    // Speed up the block falling
+
   }
 
   // Handle joystick up
   if( ih->up() ) {
-    block_->y( block_->y() - 1 );
+    
+    // Rotate the block if we've passed the delay
+    if( inputTime > lastRotateTime + rotateDelay ) {
+      // Rotate the block
+      block_->rotate();
+      // Update the last rotation time
+      lastRotateTime = inputTime;
+    }
+
   }
 
   // Handle joystick left
   if( ih->left() ) {
-    
+
+    // Move the block left if we've passed the delay
+    if( inputTime > lastMoveTime + moveDelay ) {
+      // Move the block
+      block_->x( block_->x() - 1 );
+      // Update the last movement time
+      lastMoveTime = inputTime;
+    }
+
   }
 
   // Handle joystick right
   if( ih->right() ) {
-    
+
+    // Move the block if we've passed the delay
+    if( inputTime > lastMoveTime + moveDelay ) {
+      // Move the block
+      block_->x( block_->x() + 1 );
+      // Update the last movement time
+      lastMoveTime = inputTime;
+    }
+
   }
 
   // Handle joystick select
   if( ih->select() ) {
-    block_->rotate();
+
   }
 
 }
@@ -86,6 +125,20 @@ void Game::handleInput( InputHandler *ih ) {
   before rendering that frame
  */
 void Game::update( unsigned long dt ) {
+
+  unsigned long updateTime = millis();
+
+  // Make the block fall if we've passed the delay
+  if( updateTime > lastFallTime + fallDelay ) {
+
+    // Check for collision
+
+    // Move the block
+    block_->y( block_->y() + 1 );
+
+    // Update the last fall time
+    lastFallTime = updateTime;
+  }
 
 }
 
