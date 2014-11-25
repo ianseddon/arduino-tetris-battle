@@ -81,8 +81,18 @@ void Game::handleInput( InputHandler *ih ) {
     if( inputTime > lastRotateTime + rotateDelay ) {
       // Rotate the block
       block_->rotate();
-      // Update the last rotation time
-      lastRotateTime = inputTime;
+
+      // Check for collision
+      if( stage_->collides( block_ ) ) {
+	// Collided so stop
+	block_->unrotate();
+      }
+      // No collision, so update the last rotate time
+      else {
+	// Update the last rotation time
+	lastRotateTime = inputTime;
+      }
+
     }
 
   }
@@ -92,10 +102,21 @@ void Game::handleInput( InputHandler *ih ) {
 
     // Move the block left if we've passed the delay
     if( inputTime > lastMoveTime + moveDelay ) {
+      
       // Move the block
       block_->x( block_->x() - 1 );
-      // Update the last movement time
-      lastMoveTime = inputTime;
+
+      // Check for collision
+      if( stage_->collides( block_ ) ) {
+	// Collided, so stop
+	block_->x( block_->x() + 1 );
+      }
+      // No collision, so update the last move time
+      else {
+	// Update the last movement time
+	lastMoveTime = inputTime;
+      }
+
     }
 
   }
@@ -105,10 +126,21 @@ void Game::handleInput( InputHandler *ih ) {
 
     // Move the block if we've passed the delay
     if( inputTime > lastMoveTime + moveDelay ) {
+
       // Move the block
       block_->x( block_->x() + 1 );
-      // Update the last movement time
-      lastMoveTime = inputTime;
+
+      // Check for collision
+      if( stage_->collides( block_ ) ) {
+	// Collided, so stop
+	block_->x( block_->x() - 1 );
+      }
+      // No collision, so update the last move time
+      else {
+	// Update the last movement time
+	lastMoveTime = inputTime;
+      }
+
     }
 
   }
@@ -131,10 +163,17 @@ void Game::update( unsigned long dt ) {
   // Make the block fall if we've passed the delay
   if( updateTime > lastFallTime + fallDelay ) {
 
-    // Check for collision
-
     // Move the block
     block_->y( block_->y() + 1 );
+
+    // Check for collision
+    if( stage_->collides( block_ ) ) {
+      // Collided, so stop
+      block_->y( block_->y() - 1 );
+
+      // Place the block
+
+    }
 
     // Update the last fall time
     lastFallTime = updateTime;
