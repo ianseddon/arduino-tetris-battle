@@ -36,6 +36,11 @@ class Stage {
   // Copy this frame's buffer to last frame buffer
   void syncBuffers();
 
+
+  // Collision detection
+  bool collides( Block *block );
+
+
   // Getters for the buffer values
   uint16_t color( int x, int y ) const { return buffer_[y][x]; };
   void color( int x, int y, uint16_t c ) { buffer_[y][x] = c; }
