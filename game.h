@@ -25,7 +25,7 @@ public:
   void handleInput( InputHandler *ih );
 
   // Updates the game state each frame
-  void update();
+  void update( unsigned long dt );
 
   // Draws the game state to the screen
   void draw();

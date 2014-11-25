@@ -17,7 +17,7 @@ Game::Game () {
   // Create a new stage for the game
   stage_ = new Stage();
 
-  int shape = random( 0, 7 );
+  int shape = 5;// random( 0, 7 );
 
   // Create a new block for the game
   block_ = new Block( 5, 0, colors[shape], shape );
@@ -48,6 +48,10 @@ Game::~Game () {
 
 }
 
+/*
+  The step each frame in which we handle any input from the user
+  and apply it to the game state
+ */
 void Game::handleInput( InputHandler *ih ) {
 
   // Handle joystick down
@@ -72,17 +76,26 @@ void Game::handleInput( InputHandler *ih ) {
 
   // Handle joystick select
   if( ih->select() ) {
-    
+    block_->rotate();
   }
 
 }
 
-void Game::update() {
+/*
+  The step of each frame in which the game logic is applied
+  before rendering that frame
+ */
+void Game::update( unsigned long dt ) {
 
 }
 
+/*
+  Render the current frame after all game logic for that frame
+  has been applied
+ */
 void Game::draw() {
   
+  // send the stage to the renderer to be displayed to screen
   renderer_->render( stage_ );
 
 }

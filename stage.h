@@ -1,3 +1,12 @@
+/*
+  Stage Controller
+  -----------------------------
+  Handles all the logic relating
+  to the physical representation
+  of the blocks on the game area
+  and composes the data into a buffer
+  to be rendered by the Renderer
+ */
 #ifndef STAGE_H
 #define STAGE_H
 
@@ -30,10 +39,9 @@ class Stage {
   // Getters for the buffer values
   uint16_t color( int x, int y ) const { return buffer_[y][x]; };
   void color( int x, int y, uint16_t c ) { buffer_[y][x] = c; }
-  //uint16_t blockBuffer_last( int x, int y ) { return blockBuffer_last_[y][x]; }
 
   // Setter for block
-  void block( Block *block ) { this->block_ = block; Serial.println("assigned"); };
+  void block( Block *block ) { this->block_ = block; };
 
   // "Getters" for the const height/width values
   int width() const { return STAGE_WIDTH; }

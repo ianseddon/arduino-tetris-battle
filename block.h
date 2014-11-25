@@ -1,3 +1,15 @@
+/*
+  Block Class (aka Tetromino)
+  ---------------------------
+  Represents a single Tetronimo
+  or block, and holds all the information
+  about the physical data of the Tetronimo, 
+  and graphical representation of the block.
+
+  Also contains helper functions 
+  for determining the intersections
+  and collisions of the block
+ */
 #ifndef BLOCK_H
 #define BLOCK_H
 
@@ -27,9 +39,15 @@ const int TBlock = 6;
 
 class Block {
 public:
+
+  // The constructor
   Block( int x, int y, uint16_t color, int shape ) : x_(x), y_(y), color_(color), shape_(shape) {
     rotated_ = 0;
   }
+
+  /*
+    Getters and setters for the parameters
+   */
 
   void x( int x ) { lastX_ = x_; x_ = x; }
   int x() const { return x_; }
@@ -49,15 +67,23 @@ public:
   void rotated( int rotated ) { rotated_ = rotated; }
   int rotated() const { return rotated_; }
 
+  /*
+    Block functionality
+   */
+
   void rotate();
   void unrotate();
+
+  /*
+    Helper functions
+   */
 
   bool intersects( int x, int y );
 
   bool intersectsX( int x );
   bool intersectsY( int y );
   
-protected:
+private:
   int x_;
   int y_;
   int lastX_;

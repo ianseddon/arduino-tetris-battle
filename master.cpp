@@ -21,7 +21,13 @@ void setup() {
   // Create the input handler
   InputHandler *inputHandler = new InputHandler();
 
+  // Set the initial state
   state = GAME_PLAY_SINGLEPLAYER_STATE;
+
+  // Set the time of the first frame
+  // This will be updated and used to calculate
+  // the delta time for each other frame
+  unsigned long lastFrameTime = millis();
 
   /*
     The main gameloop
@@ -34,7 +40,10 @@ void setup() {
 
     // Read the input every frame
     inputHandler->readInput( );
-    
+
+    // The time at start of frame
+    unsigned long frameStartTime = millis();
+
     switch ( state ) {
       
     // Called each frame of the menu state
@@ -46,7 +55,7 @@ void setup() {
     case GAME_PLAY_SINGLEPLAYER_STATE:
       
       gameInstance->handleInput( inputHandler );
-      gameInstance->update();
+      gameInstance->update( frameStartTime - lastFrameTime );
       gameInstance->draw();
 
       break;
@@ -55,12 +64,18 @@ void setup() {
     case GAME_PLAY_MULTIPLAYER_STATE:
 
       gameInstance->handleInput( inputHandler );
-      gameInstance->update();
+      gameInstance->update( frameStartTime - lastFrameTime );
       gameInstance->draw();
       
       break;
 
     }
+
+    // Update lastFrameTime
+    lastFrameTime = frameStartTime;
+
+    // Delay to enforce a frame delay
+    delay( 10 );
 
   }
 
