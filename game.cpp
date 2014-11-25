@@ -13,6 +13,9 @@ unsigned long moveDelay = 50;
 unsigned long lastFallTime;
 unsigned long fallDelay = 300;
 
+unsigned long lastFpsDrawTime;
+unsigned long fpsDrawDelay = 100;
+
 /*
   The constructor for the game object
   Called whenever we create a new game
@@ -177,6 +180,16 @@ void Game::update( unsigned long dt ) {
 
     // Update the last fall time
     lastFallTime = updateTime;
+  }
+
+  // Draw the FPS
+  if( updateTime > lastFpsDrawTime + fpsDrawDelay ) {
+    char fBuf[15];
+    sprintf( fBuf, "%d", (int) ( 1000 / dt ) );
+    renderer_->fillRect( stage_->width() * stage_->blockWidth() + 5, 0, 20, 15, 0x000000 );
+    renderer_->drawText( stage_->width() * stage_->blockWidth() + 5, 3, fBuf );
+    renderer_->drawText( "fps" );
+    lastFpsDrawTime = updateTime;
   }
 
 }
