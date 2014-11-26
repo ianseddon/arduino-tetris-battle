@@ -203,27 +203,6 @@ void Game::update( unsigned long dt ) {
     lastFallTime = updateTime;
   }
 
-  // Draw the text ui
-  if( updateTime > lastFpsDrawTime + fpsDrawDelay ) {
-
-    int leftPos = stage_->width() * stage_->blockWidth() + 5;
-
-    char fBuf[15];
-    sprintf( fBuf, "%d", (int) ( 1000 / dt ) );
-
-    renderer_->fillRect( leftPos, 0, 20, 15, 0x000000 );
-    renderer_->drawText( leftPos, 3, fBuf );
-    renderer_->drawText( "fps" );
-
-    sprintf( fBuf, "%d", block_->x() );
-
-    renderer_->fillRect( leftPos, 25, 20, 15, 0x000000 );
-    renderer_->drawText( leftPos, 25, "x:" );
-    renderer_->drawText( fBuf );
-
-    lastFpsDrawTime = updateTime;
-  }
-
 }
 
 /*
