@@ -1,7 +1,7 @@
 #include "stage.h"
 
-const unsigned long BG_COLOR = 0x000000;
-const unsigned long PUSH_ROW_COLOR = 0x555555;
+const unsigned long BG_COLOR = 0x0000;
+const unsigned long PUSH_ROW_COLOR = 0xBDF7;
 
 Stage::Stage() {
 
