@@ -33,6 +33,10 @@ public:
   // Return whether the game is over
   bool gameOver() const { return gameOver_; }
 
+  // Getters for objects
+  Stage* stage() const { return stage_; }
+  Block* block() const { return block_; }
+
 private:
 
   Renderer *renderer_; // The pointer to the renderer instance

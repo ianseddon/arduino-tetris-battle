@@ -194,7 +194,7 @@ void Game::update( unsigned long dt ) {
 
       // Check if the block immediately collides, if it does, then the player loses
       if( stage_->collides( block_ ) ) {
-	
+	gameOver_ = true;
       }
 
     }

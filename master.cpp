@@ -18,10 +18,10 @@ void setup() {
   // Set up the display and hand it off to the renderer
   Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
 
-  Renderer *r = new Renderer( tft );
+  Renderer *renderer = new Renderer( tft );
 
   // Create the game instance (to be moved to a menu function?)
-  Game *gameInstance = new Game( r );
+  Game *gameInstance = new Game( renderer );
 
   // Create the input handler
   InputHandler *inputHandler = new InputHandler();
@@ -33,6 +33,9 @@ void setup() {
   // This will be updated and used to calculate
   // the delta time for each other frame
   unsigned long lastFrameTime = millis();
+
+  // Was the game over last frame? This way we only draw the game over screen on the first frame
+  bool wasGameOverLastFrame = false;
 
   /*
     The main gameloop
@@ -70,7 +73,28 @@ void setup() {
       // The game is over, so show a game over screen
       else {
 
-	
+	if( !wasGameOverLastFrame ) {
+
+	  int bannerHeight = 30;
+
+	  // Draw the game over banner over top of the stage
+	  renderer->fillRect( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2) - (bannerHeight/2), gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, bannerHeight, 0x000000 );
+	  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) - 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
+	  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) + bannerHeight + 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
+
+	  // Draw the game over text
+	  renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, "Game Over" );
+	  
+	  wasGameOverLastFrame = true;
+
+	}
+
+	// Check if the user has pressed select to start a new game
+	if( inputHandler->select() ) {
+	  delete gameInstance;
+	  gameInstance = new Game( renderer );
+	  wasGameOverLastFrame = false;
+	}
 
       }
 
