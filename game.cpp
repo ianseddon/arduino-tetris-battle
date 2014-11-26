@@ -22,13 +22,13 @@ unsigned long fpsDrawDelay = 200;
   The constructor for the game object
   Called whenever we create a new game
 */
-Game::Game () {
+Game::Game ( Renderer *renderer ) : renderer_(renderer) {
 
-  // Initialize the display
-  Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
+  // Make sure we set the game to not over
+  gameOver_ = false;
 
   // Create a new renderer for the game
-  renderer_ = new Renderer( tft );
+  //renderer_ = new Renderer( tft );
 
   // Create a new stage for the game
   stage_ = new Stage();
@@ -58,9 +58,6 @@ Game::~Game () {
 
   // Dealloc the stage
   delete stage_;
-
-  // Dealloc the renderer
-  delete renderer_;
 
 }
 
@@ -186,12 +183,19 @@ void Game::update( unsigned long dt ) {
       // Dealloc old block
       delete block_;
 
+      // Assign the block a random type
       int bType = random( 0, 7 );
 
       // Create new block
       block_ = new Block( 5, 0, colors[bType], bType );
+
       // Register new block with stage
       stage_->block( block_ );
+
+      // Check if the block immediately collides, if it does, then the player loses
+      if( stage_->collides( block_ ) ) {
+	
+      }
 
     }
 

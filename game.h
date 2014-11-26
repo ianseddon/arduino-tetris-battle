@@ -17,7 +17,7 @@ class Game {
 public:
   
   // Constructor
-  Game();
+  Game( Renderer *renderer );
   // Destructor
   ~Game();
 
@@ -30,13 +30,17 @@ public:
   // Draws the game state to the screen
   void draw();
 
+  // Return whether the game is over
+  bool gameOver() const { return gameOver_; }
+
 private:
 
   Renderer *renderer_; // The pointer to the renderer instance
   Stage *stage_;       // The pointer to the stage instance
   Block *block_;       // The pointer to the block instance
 
-  int speed_; // The speed multiplier that the game will run at. Default 1
+  int speed_;          // The speed multiplier that the game will run at. Default 1
+  bool gameOver_;      // Is the game over?
 
 };
 

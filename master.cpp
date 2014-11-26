@@ -15,8 +15,13 @@ void setup() {
   // Set up serial logging
   Serial.begin(9600);
 
+  // Set up the display and hand it off to the renderer
+  Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
+
+  Renderer *r = new Renderer( tft );
+
   // Create the game instance (to be moved to a menu function?)
-  Game *gameInstance = new Game();
+  Game *gameInstance = new Game( r );
 
   // Create the input handler
   InputHandler *inputHandler = new InputHandler();
@@ -53,10 +58,21 @@ void setup() {
       
     // Called each frame of the singleplayer game
     case GAME_PLAY_SINGLEPLAYER_STATE:
+
+      // The game isn't over, so run the game loop
+      if( !gameInstance->gameOver() ) {
       
-      gameInstance->handleInput( inputHandler );
-      gameInstance->update( frameStartTime - lastFrameTime);
-      gameInstance->draw();
+	gameInstance->handleInput( inputHandler );
+	gameInstance->update( frameStartTime - lastFrameTime);
+	gameInstance->draw();
+
+      }
+      // The game is over, so show a game over screen
+      else {
+
+	
+
+      }
 
       break;
 
