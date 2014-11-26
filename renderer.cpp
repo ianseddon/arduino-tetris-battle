@@ -12,7 +12,9 @@ Renderer::Renderer( Adafruit_ST7735 tft ) : tft_(tft) {
 }
 
 void Renderer::initialRender( Stage *stage ) {
-  
+
+  tft_.fillScreen( tft_.Color565( 0x00, 0x00, 0x00 ) );
+
   tft_.drawFastHLine( stage->width() * stage->blockWidth(), 15, 128, 0xCCDD00 );
   
   // draw left border
