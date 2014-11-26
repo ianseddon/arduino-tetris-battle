@@ -8,7 +8,7 @@ unsigned long lastRotateTime;
 unsigned long rotateDelay = 150;
 
 unsigned long lastMoveTime;
-unsigned long moveDelay = 50;
+unsigned long moveDelay = 80;
 
 unsigned long lastFallTime;
 const unsigned long REGULAR_FALL_DELAY = 400;
@@ -27,13 +27,12 @@ Game::Game ( Renderer *renderer ) : renderer_(renderer) {
   // Make sure we set the game to not over
   gameOver_ = false;
 
-  // Create a new renderer for the game
-  //renderer_ = new Renderer( tft );
-
   // Create a new stage for the game
   stage_ = new Stage();
 
-  int shape = 5;// random( 0, 7 );
+  // Seed the random number generator and generate first block
+  randomSeed( analogRead( 10 ) );
+  int shape = random( 0, 7 );
 
   // Create a new block for the game
   block_ = new Block( 5, 0, colors[shape], shape );

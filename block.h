@@ -19,13 +19,13 @@
 //const int BLOCK_HEIGHT = 8;
 
 const uint16_t colors[7] = {
-  0xFFFF00, // O Block
-  0x00FFFF, // I Block
-  0x00FF00, // S Block
-  0xFF0000, // Z Block
-  0xFFA500, // L Block
-  0x0000FF, // J Block
-  0xA020F0  // T Block
+  0xFFE0,//0xFFFF00,//0xFFFF00, // O Block
+  0x7FF,//0x00FFFF, // I Block
+  0x7E0,//0x00FF00, // S Block
+  0xF800,//0xFF0000, // Z Block
+  0xFBE0,//0xFFA500, // L Block
+  0x1F,//0x0000FF, // J Block
+  0xF81F//0xA020F0  // T Block
 };
 
 

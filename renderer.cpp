@@ -46,7 +46,10 @@ void Renderer::render( Stage *stage ) {
 
       // draw the stage buffer
       if( stage->shouldDraw( x, y ) ) {
+
+	// adapt the color for the tft
 	tft_.fillRect( x * stage->blockWidth() + 1, y * stage->blockHeight(), stage->blockWidth() - 1, stage->blockHeight() - 1, stage->color( x, y ) );
+	// tft_.Color565( (stage->color( x, y ) >> 16 ) & 0xFF, (stage->color( x, y ) >> 8 ) & 0xFF, stage->color( x, y ) & 0xFF )
       }
     }
   }
