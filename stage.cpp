@@ -19,8 +19,13 @@ bool Stage::shouldDraw( int x, int y ) {
 
 }
 
+/*
+  Composes a buffer from the data of the background layer, placed block data and controlled block
+  into the data that will be displayed this frame
+ */
 void Stage::composeBuffer() {
   
+  // Iterate through stage, compositing background layer, placed blocks and controlled block into a single buffer
   for( int y = 0; y < this->height(); y++ ) {
     for( int x = 0; x < this->width(); x++ ) {
   
@@ -39,6 +44,9 @@ void Stage::composeBuffer() {
 
 }
 
+/*
+  Update the last frame buffer with the current frame data
+ */
 void Stage::syncBuffers() {
   memcpy( &buffer_last_, &buffer_, sizeof( buffer_ ) );
 }
@@ -78,5 +86,53 @@ bool Stage::collides( Block *b ) {
 
   // didn't hit anything so return false
   return false;
+
+}
+
+/*
+  Take a Block object and place it into the placedBlocks array
+  then check if any rows need to be cleared
+ */
+void Stage::placeBlock( Block *block ) {
+
+  // Iterate through the block's bounds and place all chunks 
+  // that are occupied by the block into placedBlocks_
+  for( int x = -2; x < 2; x++ ) {
+    for( int y = -1; y < 3; y++ ) {
+      
+      // check if the block occupies this spot
+      if( block->intersects( block->x() + x, block->y() + y ) ) {
+	
+	// the block occupies these coords, so set placedBlocks accordingly
+	placedBlocks_[block->y() + y][block->x() + x] = block->color();
+	
+      }
+
+    }
+  }
+
+}
+
+/*
+  Pushes a number of "penalty" rows up from the bottom
+  Block data between 0 and numRows will be lost
+ */
+void Stage::pushRows( int numRows ) {
+
+  // Push all existing rows up by numRows starting from the top of the stage and working down
+  for( int y = numRows; y < this->height(); y++ ) {
+    for( int x = 0; x < this->width(); x++ ) {
+      // Move the block up by numrows
+      // y-numRows will be 0 (top of stage) at beginning of loop
+      placedBlocks_[y-numRows][x] = placedBlocks_[y][x];
+    }
+  }
+
+  // Fill the newly empty rows (from height-numRows to height) with stuff
+  for ( int y = this->height() - numRows; y < this->height(); y++ ) {
+    for( int x = 0; x < this->width(); x++ ) {
+      placedBlocks_[y][x] = 0x555555;
+    }
+  }
 
 }

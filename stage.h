@@ -36,6 +36,14 @@ class Stage {
   // Copy this frame's buffer to last frame buffer
   void syncBuffers();
 
+  // Clearing rows
+  
+  
+  // Placing blocks
+  void placeBlock( Block *block ); // calls clear rows
+  
+  // Pushing rows
+  void pushRows( int numRows );
 
   // Collision detection
   bool collides( Block *block );
