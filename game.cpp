@@ -8,7 +8,7 @@ unsigned long lastRotateTime;
 unsigned long rotateDelay = 150;
 
 unsigned long lastMoveTime;
-unsigned long moveDelay = 80;
+unsigned long moveDelay = 100;
 
 unsigned long lastFallTime;
 const unsigned long REGULAR_FALL_DELAY = 400;
