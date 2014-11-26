@@ -156,7 +156,7 @@ void Game::handleInput( InputHandler *ih ) {
 
   // Handle joystick select
   if( ih->select() ) {
-
+    stage_->pushRows(1);
   }
 
 }
@@ -181,6 +181,7 @@ void Game::update( unsigned long dt ) {
       block_->y( block_->y() - 1 );
 
       // Place the block
+      stage_->placeBlock( block_ );
 
       // Dealloc old block
       delete block_;

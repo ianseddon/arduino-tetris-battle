@@ -55,7 +55,7 @@ void setup() {
     case GAME_PLAY_SINGLEPLAYER_STATE:
       
       gameInstance->handleInput( inputHandler );
-      gameInstance->update( frameStartTime - lastFrameTime );
+      gameInstance->update( frameStartTime - lastFrameTime);
       gameInstance->draw();
 
       break;
