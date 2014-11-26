@@ -111,6 +111,22 @@ void setup() {
 
     }
 
+    // Draw the FPS
+    int leftPos = 85;
+
+    char fBuf[15];
+    sprintf( fBuf, "%d", (int) ( 1000 / ( frameStartTime - lastFrameTime ) ) );
+
+    renderer->fillRect( leftPos, 0, 20, 15, 0x000000 );
+    renderer->drawText( leftPos, 3, fBuf );
+    renderer->drawText( "fps" );
+
+    sprintf( fBuf, "%d", gameInstance->block()->x() );
+
+    renderer->fillRect( leftPos, 25, 20, 15, 0x000000 );
+    renderer->drawText( leftPos, 25, "x:" );
+    renderer->drawText( fBuf );
+
     // Update lastFrameTime
     lastFrameTime = frameStartTime;
 
