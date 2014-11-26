@@ -1,6 +1,7 @@
 #include "stage.h"
 
 const unsigned long BG_COLOR = 0x000000;
+const unsigned long PUSH_ROW_COLOR = 0x555555;
 
 Stage::Stage() {
 
@@ -130,8 +131,22 @@ void Stage::pushRows( int numRows ) {
 
   // Fill the newly empty rows (from height-numRows to height) with stuff
   for ( int y = this->height() - numRows; y < this->height(); y++ ) {
+
+    // make a gap in the pushed row so they can be cleared
+    int gapPos = random( 0, this->width() );
+
     for( int x = 0; x < this->width(); x++ ) {
-      placedBlocks_[y][x] = 0x555555;
+
+      // check if we're at the position of the gap
+      if( x == gapPos ) {
+	// place a gap in the row
+	placedBlocks_[y][x] = BG_COLOR;
+      }
+      // not at the gap
+      else {
+	// set the color to the color of the pushed row
+	placedBlocks_[y][x] = PUSH_ROW_COLOR;
+      }
     }
   }
 
