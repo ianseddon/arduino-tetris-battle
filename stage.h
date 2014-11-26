@@ -37,7 +37,7 @@ class Stage {
   void syncBuffers();
 
   // Clearing rows
-  
+  void clearRows( int block_y );
   
   // Placing blocks
   void placeBlock( Block *block ); // calls clear rows

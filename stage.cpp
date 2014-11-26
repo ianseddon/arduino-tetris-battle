@@ -112,6 +112,39 @@ void Stage::placeBlock( Block *block ) {
     }
   }
 
+  // Clear any rows that the block could have completed
+  clearRows( block->y() );
+
+}
+
+
+/*
+  Clear all the complete rows
+*/
+void Stage::clearRows(int block_y){  
+
+  // Check if the row is clear, and clear it if it is
+  for(int y = -1; y<3;y++){
+    bool isComplete = true;   //is this row complete?
+    //looping through all the blocks in one row
+    for(int x = 0; x<this->width();x++){
+      if(placedBlocks_[block_y+y][x]  == BG_COLOR){
+	isComplete = false;
+      }
+    }
+
+    // Move all rows above down
+    if(isComplete){
+      //clearing the row
+      int row = block_y+y;
+      for(int j = row-1;j>=0;j--){
+	for(int k = 0; k<this->width(); k++){
+	  placedBlocks_[j+1][k] = placedBlocks_[j][k];
+	}
+      }
+    }
+  }
+  
 }
 
 /*
