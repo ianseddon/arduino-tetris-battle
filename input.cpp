@@ -44,4 +44,5 @@ void InputHandler::readInput( ) {
   // Check if select is pressed
   if( sInput == LOW  )
     select_ = true;
+
 }

@@ -94,3 +94,14 @@ void Renderer::drawText( int x, int y, const char *s ) {
 void Renderer::drawText( const char *s ) {
   tft_.print( s );
 }
+
+/*
+  Wrapper for tft.setTextSize
+*/
+void Renderer::setTextSize( int s ) {
+  tft_.setTextSize( s );
+}
+
+void Renderer::wipeScreen() {
+  tft_.fillScreen( 0x0000 );
+}

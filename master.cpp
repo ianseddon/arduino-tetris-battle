@@ -3,39 +3,92 @@
 // Include our class files
 #include "game.h"
 #include "input.h"
+#include "menu.h"
 
 uint8_t state;
 
-const uint8_t MENU_STATE                   = 0;
-const uint8_t GAME_PLAY_SINGLEPLAYER_STATE = 1;
-const uint8_t GAME_PLAY_MULTIPLAYER_STATE  = 2;
+const uint8_t MENU_STATE                    = 0;
+const uint8_t GAME_PLAY_SINGLEPLAYER_STATE  = 1;
+const uint8_t GAME_PAUSE_SINGLEPLAYER_STATE = 3;
+const uint8_t GAME_PLAY_MULTIPLAYER_STATE   = 2;
+
+// Was the game over last frame? This way we only draw the game over screen on the first frame
+bool wasGameOverLastFrame = false;
+
+// Delay showing the FPS to reduce flicker
+unsigned long lastDrewFPS;
+
+// Set up the display
+Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
+
+// The pointers to our renderer and gameInstance
+Game *gameInstance;
+Renderer *renderer;
+InputHandler *inputHandler;
+Menu *menu;
+
+void startSinglePlayerGame() {
+
+  Serial.println("Starting singleplayer game");
+  
+  if( gameInstance ) delete gameInstance;
+
+  gameInstance = new Game( renderer );
+  wasGameOverLastFrame = false;
+  state = GAME_PLAY_SINGLEPLAYER_STATE;
+}
+
+// Draw the FPS
+void drawFPS( unsigned long dt ) {
+
+  // Only draw every 50ms to reduce flickering
+  if( millis() - lastDrewFPS < 50 ) return;
+
+  int leftPos = 85;
+
+  char fBuf[15];
+  sprintf( fBuf, "%d", (int) ( 1000 / dt ) );
+  
+  renderer->fillRect( leftPos, 0, 50, 15, 0x000000 );
+  renderer->drawText( leftPos, 3, fBuf );
+  renderer->drawText( "fps" );
+
+  lastDrewFPS = millis();
+}
+
+void drawGameOver() {
+  int bannerHeight = 30;
+
+  // Draw the game over banner over top of the stage
+  renderer->fillRect( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2) - (bannerHeight/2), gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, bannerHeight, 0x000000 );
+  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) - 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
+  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) + bannerHeight + 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
+  
+  // Draw the game over text
+  renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, "Game Over" );
+}
 
 void setup() {
 
   // Set up serial logging
   Serial.begin(9600);
 
-  // Set up the display and hand it off to the renderer
-  Adafruit_ST7735 tft = Adafruit_ST7735( TFT_CS, TFT_DC, TFT_RST );
+  // Create the renderer and hand off the display reference to it
+  renderer = new Renderer( tft );
 
-  Renderer *renderer = new Renderer( tft );
-
-  // Create the game instance (to be moved to a menu function?)
-  Game *gameInstance = new Game( renderer );
+  // Create the menu and hand the renderer reference to it
+  menu = new Menu( renderer );
 
   // Create the input handler
-  InputHandler *inputHandler = new InputHandler();
+  inputHandler = new InputHandler();
 
   // Set the initial state
-  state = GAME_PLAY_SINGLEPLAYER_STATE;
+  state = MENU_STATE;
 
   // Set the time of the first frame
   // This will be updated and used to calculate
   // the delta time for each other frame
   unsigned long lastFrameTime = millis();
-
-  // Was the game over last frame? This way we only draw the game over screen on the first frame
-  bool wasGameOverLastFrame = false;
 
   /*
     The main gameloop
@@ -56,7 +109,23 @@ void setup() {
       
     // Called each frame of the menu state
     case MENU_STATE:
-      
+
+      menu->handleInput( inputHandler );
+      menu->draw();
+
+      if( inputHandler->select() ) {
+
+	// Take the appropriate action depending on which was selected
+	switch( menu->selected() ) {
+	case 0:
+	  startSinglePlayerGame();
+	  break;
+	case 1:
+	  break;
+	}
+
+      }
+
       break;
       
     // Called each frame of the singleplayer game
@@ -64,7 +133,7 @@ void setup() {
 
       // The game isn't over, so run the game loop
       if( !gameInstance->gameOver() ) {
-      
+
 	gameInstance->handleInput( inputHandler );
 	gameInstance->update( frameStartTime - lastFrameTime);
 	gameInstance->draw();
@@ -75,15 +144,7 @@ void setup() {
 
 	if( !wasGameOverLastFrame ) {
 
-	  int bannerHeight = 30;
-
-	  // Draw the game over banner over top of the stage
-	  renderer->fillRect( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2) - (bannerHeight/2), gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, bannerHeight, 0x000000 );
-	  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) - 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
-	  renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) + bannerHeight + 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
-
-	  // Draw the game over text
-	  renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, "Game Over" );
+	  drawGameOver();
 	  
 	  wasGameOverLastFrame = true;
 
@@ -91,12 +152,14 @@ void setup() {
 
 	// Check if the user has pressed select to start a new game
 	if( inputHandler->select() ) {
-	  delete gameInstance;
-	  gameInstance = new Game( renderer );
-	  wasGameOverLastFrame = false;
+	  startSinglePlayerGame();
 	}
 
       }
+
+      break;
+
+    case GAME_PAUSE_SINGLEPLAYER_STATE:
 
       break;
 
@@ -111,33 +174,24 @@ void setup() {
 
     }
 
-    // Draw the FPS
-    int leftPos = 85;
+    int dt = frameStartTime - lastFrameTime;
 
-    char fBuf[15];
-    sprintf( fBuf, "%d", (int) ( 1000 / ( frameStartTime - lastFrameTime ) ) );
+    if( state != MENU_STATE )
+      drawFPS( dt );
 
-    renderer->fillRect( leftPos, 0, 20, 15, 0x000000 );
-    renderer->drawText( leftPos, 3, fBuf );
-    renderer->drawText( "fps" );
-
-    sprintf( fBuf, "%d", gameInstance->block()->x() );
-
-    renderer->fillRect( leftPos, 25, 20, 15, 0x000000 );
-    renderer->drawText( leftPos, 25, "x:" );
-    renderer->drawText( fBuf );
+    // Delay to enforce a constant frame rate
+    delay( max( 20 - dt, 0 ) );
 
     // Update lastFrameTime
     lastFrameTime = frameStartTime;
-
-    // Delay to enforce a frame delay
-    delay( 10 );
 
   }
 
   // Dealloc objects
   delete gameInstance;
   delete inputHandler;
+  delete renderer;
+  delete menu;
 
 }
 

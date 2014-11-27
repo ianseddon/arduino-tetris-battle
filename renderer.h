@@ -34,6 +34,8 @@ class Renderer {
   void initialRender( Stage *stage );
   void render( Stage *stage );
 
+  void wipeScreen();
+
   // Wrappers for Adafruit drawing functions for easy portability
   void fillRect( int x, int y, int w, int h, uint16_t color );
   void drawVLine( int x, int y, int h, uint16_t color );
@@ -41,6 +43,7 @@ class Renderer {
   void drawText( int x, int y, const char *s );
   void drawText( const char *s );
   void drawText( float f );
+  void setTextSize( int s );
 
  private:
 
