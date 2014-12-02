@@ -129,9 +129,6 @@ void setup() {
     // Read the input every frame
     inputHandler->readInput( );
 
-    // read the serial every frame
-    //serialHandler->readSerial();
-
     // The time at start of frame
     unsigned long frameStartTime = millis();
 
@@ -205,7 +202,6 @@ void setup() {
       break;
 
     case GAME_PAUSE_SINGLEPLAYER_STATE:
-      Serial.print("Pause");
       break;
 
     // Called each frame of the multiplayer game
@@ -218,24 +214,20 @@ void setup() {
       }
       else {
 
-	Serial.print("Game over");
+	if( !wasGameOverLastFrame ) {
 
-	//if( !wasGameOverLastFrame ) {
-
-	drawBanner( "Game Over" );
+	  drawBanner( "Game Over" );
 
 	  connection->write( Connection::gameOverByte );
 
 	  wasGameOverLastFrame = true;
 
-	  //}
+	}
 
       }
       break;
 
     }
-
-    //Serial.println("frame");
 
     int dt = frameStartTime - lastFrameTime;
 
@@ -243,7 +235,8 @@ void setup() {
       drawFPS( dt );
 
     // Delay to enforce a constant frame rate
-    delay( max( 30 - dt, 0 ) );
+    //delay( max( 30 - dt, 0 ) );
+    delay( 30 );
 
     // Update lastFrameTime
     lastFrameTime = frameStartTime;
