@@ -225,6 +225,17 @@ void Game::update( unsigned long dt ) {
     lastFallTime = updateTime;
   }
 
+  // Check for serial data to push rows
+  int rData = connection_->read();
+  
+  // If we received a positive integer, push that many rows
+  if( rData > 0 ) {
+    stage_->pushRows( rData );
+  }
+  else if( rData == -1 ) {
+    // End game
+  }
+
 }
 
 /*
@@ -323,7 +334,7 @@ void Game::updateScore( int rowsCleared ) {
 
   // Send lines equal to the combo multiplier
   if( combo_ > 0 ) {
-    // SENDROWS( combo_ )
+    connection_->write( combo_ );
   }
 
   // Draw the new combo multiplier

@@ -89,5 +89,17 @@ void Connection::handshakeClient() {
 }
 
 int Connection::read() {
-  return (int) serial_->read();
+
+  if( serial_->available() ) {
+    return (int) serial_->read();
+  }
+  else {
+    return 0;
+  }
+}
+
+void Connection::write( int data ) {
+
+  serial_->write( data );
+
 }
