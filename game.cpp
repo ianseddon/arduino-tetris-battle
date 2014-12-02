@@ -25,6 +25,9 @@ Game::Game ( Renderer *renderer, Connection *connection ) : renderer_(renderer),
   // Make sure we set the game to not over
   gameOver_ = false;
 
+  // Set won to false by default
+  won_ = false;
+
   // Set the initial score
   score_ = 0;
 
@@ -227,18 +230,15 @@ void Game::update( unsigned long dt ) {
 
   // Check for serial data to push rows
   int rData = connection_->read();
-  
-  Serial.print( rData );
 
   // If we received a positive integer, push that many rows
   if( rData == Connection::gameOverByte ) {
     gameOver_ = true;
+    won_ = true;
   }
   else if( rData > 0 ) {
     stage_->pushRows( rData );
   }
-
-  Serial.println( "a" );
 
 }
 

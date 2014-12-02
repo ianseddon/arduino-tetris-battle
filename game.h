@@ -47,6 +47,8 @@ public:
   Stage* stage() const { return stage_; }
   Block* block() const { return block_; }
 
+  bool won() const { return won_; }
+
 private:
 
   Renderer *renderer_; // The pointer to the renderer instance
@@ -57,6 +59,7 @@ private:
 
   int speed_;          // The speed multiplier that the game will run at. Default 1
   bool gameOver_;      // Is the game over?
+  bool won_;           // Did we win?
 
   int score_;          // The player's score
   int combo_;          // The player's combo multiplier

@@ -216,7 +216,12 @@ void setup() {
 
 	if( !wasGameOverLastFrame ) {
 
-	  drawBanner( "Game Over" );
+	  if( gameInstance->won() ) {
+	    drawBanner( "You Win!");
+	  }
+	  else {
+	    drawBanner( "You Lost :(" );
+	  }
 
 	  connection->write( Connection::gameOverByte );
 
