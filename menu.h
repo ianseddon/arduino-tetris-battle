@@ -13,6 +13,8 @@ class Menu {
   // Handle the input
   void handleInput( InputHandler *ih );
   void draw();
+  // Force a redraw
+  void redraw();
 
   int selected() const { return selected_; }
 

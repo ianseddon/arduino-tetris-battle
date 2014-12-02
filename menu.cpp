@@ -26,6 +26,11 @@ void Menu::handleInput( InputHandler *ih ) {
 
 }
 
+void Menu::redraw() {
+  needToDraw_ = true;
+  draw();
+}
+
 void Menu::draw() {
 
   if( needToDraw_ ) {
