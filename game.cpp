@@ -25,6 +25,9 @@ Game::Game ( Renderer *renderer ) : renderer_(renderer) {
   // Make sure we set the game to not over
   gameOver_ = false;
 
+  // Set the initial score
+  score_ = 0;
+
   // Create a new stage for the game
   stage_ = new Stage();
 
@@ -48,6 +51,9 @@ Game::Game ( Renderer *renderer ) : renderer_(renderer) {
 
   // Draw the next block
   drawNextBlock();
+
+  // Draw the score
+  drawScore();
 
 }
 
@@ -183,7 +189,7 @@ void Game::update( unsigned long dt ) {
       block_->y( block_->y() - 1 );
 
       // Place the block
-      stage_->placeBlock( block_ );
+      int rowsCleared = stage_->placeBlock( block_ );
 
       // Dealloc old block
       delete block_;
@@ -206,6 +212,12 @@ void Game::update( unsigned long dt ) {
 
       // Draw the next block to be spawned
       drawNextBlock();
+
+      // Update the score
+      updateScore( rowsCleared );
+
+      // Update the score display
+      drawScore();
 
     }
 
@@ -248,4 +260,65 @@ void Game::drawNextBlock() {
       }
     }
   }
+}
+
+/*
+  Draws the player's score
+ */
+void Game::drawScore() {
+  
+  int left_bound = 7 + stage_->width() * stage_->blockWidth();
+  int top_bound = 50;
+
+  // Erase
+  renderer_->fillRect( left_bound, top_bound, 128 - left_bound, 20, 0x0000 );
+
+  // Write the integer score to a charbuffer
+  char buf[8];
+  sprintf( buf, "%d", score_ );
+
+  // Draw text
+  renderer_->drawText( left_bound - 2, top_bound, "Score:" );
+  renderer_->drawText( left_bound, top_bound + 10, buf );
+
+}
+
+/*
+  Update the player's score based on the number of rows cleared and combo multiplier
+*/
+void Game::updateScore( int rowsCleared ) {
+
+  // Increase the combo multiplier
+  combo_++;
+
+  switch( rowsCleared ) {
+
+  // Single
+  case 1:
+    score_ += 100 + 100 * combo_;
+    break;
+  
+  // Double
+  case 2:
+    score_ += 300 + 100 * combo_;
+    break;
+  
+  // Triple
+  case 3:
+    score_ += 500 + 100 * combo_;
+    break;
+  
+  // Tetris
+  case 4:
+    score_ += 800 + 100 * combo_;
+    break;
+
+  // No clear
+  default:
+    // Reset their combo multiplier
+    combo_ = 0;
+    break;
+
+  }
+
 }

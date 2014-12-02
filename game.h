@@ -33,6 +33,12 @@ public:
   // Draws the next block to be spawned to the sidebar
   void drawNextBlock();
 
+  // Draws the player's score
+  void drawScore();
+
+  // Update the score
+  void updateScore( int rowsCleared );
+
   // Return whether the game is over
   bool gameOver() const { return gameOver_; }
 
@@ -49,6 +55,9 @@ private:
 
   int speed_;          // The speed multiplier that the game will run at. Default 1
   bool gameOver_;      // Is the game over?
+
+  int score_;          // The player's score
+  int combo_;          // The player's combo multiplier
 
 };
 

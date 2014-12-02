@@ -93,8 +93,9 @@ bool Stage::collides( Block *b ) {
 /*
   Take a Block object and place it into the placedBlocks array
   then check if any rows need to be cleared
+  Returns the number of rows cleared (returned by clearRows)
  */
-void Stage::placeBlock( Block *block ) {
+int Stage::placeBlock( Block *block ) {
 
   // Iterate through the block's bounds and place all chunks 
   // that are occupied by the block into placedBlocks_
@@ -113,15 +114,18 @@ void Stage::placeBlock( Block *block ) {
   }
 
   // Clear any rows that the block could have completed
-  clearRows( block->y() );
+  return clearRows( block->y() );
 
 }
 
 
 /*
   Clear all the complete rows
+  Then return the number of rows cleared
 */
-void Stage::clearRows(int block_y){  
+int Stage::clearRows(int block_y) {
+
+  int rowsCleared = 0;
 
   // Check if the row is clear, and clear it if it is
   for(int y = -1; y<3;y++){
@@ -135,6 +139,10 @@ void Stage::clearRows(int block_y){
 
     // Move all rows above down
     if(isComplete){
+
+      // increase the count of rows cleared
+      rowsCleared++;
+
       //clearing the row
       int row = block_y+y;
       for(int j = row-1;j>=0;j--){
@@ -144,6 +152,8 @@ void Stage::clearRows(int block_y){
       }
     }
   }
+
+  return rowsCleared;
   
 }
 

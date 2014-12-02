@@ -36,11 +36,11 @@ class Stage {
   // Copy this frame's buffer to last frame buffer
   void syncBuffers();
 
-  // Clearing rows
-  void clearRows( int block_y );
+  // Clearing rows, returns number of rows cleared
+  int clearRows( int block_y );
   
-  // Placing blocks
-  void placeBlock( Block *block ); // calls clear rows
+  // Placing blocks, returns number of rows cleared (if any)
+  int placeBlock( Block *block ); // calls clear rows
   
   // Pushing rows
   void pushRows( int numRows );
