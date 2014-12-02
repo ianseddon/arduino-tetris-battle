@@ -231,11 +231,11 @@ void Game::update( unsigned long dt ) {
   Serial.print( rData );
 
   // If we received a positive integer, push that many rows
-  if( rData > 0 ) {
-    stage_->pushRows( rData );
-  }
-  else if( rData == Connection::gameOverByte ) {
+  if( rData == Connection::gameOverByte ) {
     gameOver_ = true;
+  }
+  else if( rData > 0 ) {
+    stage_->pushRows( rData );
   }
 
   Serial.println( "a" );
