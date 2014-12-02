@@ -17,8 +17,12 @@ class Connection {
   void handshakeClient();
   void handshakeServer();
 
-  int read(); 
+  // Called every frame
+  int read();
+
   void write( int data );
+
+  static const int gameOverByte;
 
  private:
   

@@ -27,7 +27,9 @@ Game *gameInstance;
 Renderer *renderer;
 InputHandler *inputHandler;
 Menu *menu;
+
 Connection *connection;
+const int gameOverByte = -1;
 
 void startSinglePlayerGame() {
   
@@ -210,10 +212,24 @@ void setup() {
     // Called each frame of the multiplayer game
     case GAME_PLAY_MULTIPLAYER_STATE:
 
-      gameInstance->handleInput( inputHandler );
-      gameInstance->update( frameStartTime - lastFrameTime );
-      gameInstance->draw();
-      
+      if( !gameInstance->gameOver() ) {
+	gameInstance->handleInput( inputHandler );
+	gameInstance->update( frameStartTime - lastFrameTime );
+	gameInstance->draw();
+      }
+      else {
+
+	if( !wasGameOverLastFrame ) {
+
+	  connection->write( Connection::gameOverByte );
+
+	  drawGameOver();
+
+	  wasGameOverLastFrame = true;
+
+	}
+
+      }
       break;
 
     }

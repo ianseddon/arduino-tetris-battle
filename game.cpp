@@ -234,6 +234,7 @@ void Game::update( unsigned long dt ) {
   }
   else if( rData == -1 ) {
     // End game
+    gameOver_ = true;
   }
 
 }

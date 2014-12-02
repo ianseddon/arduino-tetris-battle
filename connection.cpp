@@ -4,6 +4,7 @@ const int Connection::connectionRequestDelay = 1000;
 const int Connection::connectionTimeout = 1000;
 const char Connection::crByte = 'C';
 const char Connection::ackByte = 'A';
+const int Connection::gameOverByte = -1;
 
 Connection::Connection( HardwareSerial *serial ) : serial_(serial) {
 
