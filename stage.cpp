@@ -193,4 +193,7 @@ void Stage::pushRows( int numRows ) {
     }
   }
 
+  // Move block up with pushed rows
+  block_->y( (block_->y() > 0 ) ? block_->y() - numRows : 0 );
+
 }
