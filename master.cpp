@@ -203,7 +203,8 @@ void setup() {
 
 	// Check if the user has pressed select to start a new game
 	if( inputHandler->select() ) {
-	  startSinglePlayerGame();
+	  state = MENU_STATE;
+	  menu->redraw();
 	}
 
       }
