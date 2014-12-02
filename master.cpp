@@ -191,7 +191,7 @@ void setup() {
       drawFPS( dt );
 
     // Delay to enforce a constant frame rate
-    delay( max( 20 - dt, 0 ) );
+    delay( max( 30 - dt, 0 ) );
 
     // Update lastFrameTime
     lastFrameTime = frameStartTime;

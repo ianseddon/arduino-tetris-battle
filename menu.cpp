@@ -18,7 +18,7 @@ void Menu::handleInput( InputHandler *ih ) {
   }
   
   if( ih->down() ) {
-    if( selected_ < 1 ) {
+    if( selected_ < 2 ) {
       selected_++;
       needToDraw_ = true;
     }
@@ -30,7 +30,7 @@ void Menu::draw() {
 
   if( needToDraw_ ) {
 
-    renderer_->fillRect( 35, 65, 60, 30, 0x0000 );
+    renderer_->fillRect( 35, 65, 60, 50, 0x0000 );
 
     // Draw the title
     renderer_->setTextSize( 2 );
@@ -40,6 +40,7 @@ void Menu::draw() {
     // Offset the selected text
     int offset0 = 0;
     int offset1 = 0;
+    int offset2 = 0;
 
     // Draw the selection pip
     switch( selected_ ) {
@@ -53,11 +54,18 @@ void Menu::draw() {
       renderer_->fillRect( 35, 68, 3, 3, 0x0000 );
       offset1 = 3;
       break;
+    case 2:
+      renderer_->fillRect( 35, 98, 3, 3, 0xF81F );
+      renderer_->fillRect( 35, 68, 3, 3, 0x0000 );
+      renderer_->fillRect( 35, 83, 3, 3, 0x0000 );
+      offset2 = 3;
+      break;
     }
 
     // Draw the selections
     renderer_->drawText( 45 + offset0, 65, "1 player" );
     renderer_->drawText( 45 + offset1, 80, "2 player" );
+    renderer_->drawText( 45 + offset2, 95, "About" );
 
     needToDraw_ = false;
   }

@@ -321,4 +321,23 @@ void Game::updateScore( int rowsCleared ) {
 
   }
 
+  // Send lines equal to the combo multiplier
+  if( combo_ > 0 ) {
+    // SENDROWS( combo_ )
+  }
+
+  // Draw the new combo multiplier
+  int left_bound = 7 + stage_->width() * stage_->blockWidth();
+  int top_bound = 70;
+
+  // Erase
+  renderer_->fillRect( left_bound, top_bound, 128 - left_bound, 20, 0x0000 );
+
+  // Write the integer combo to a charbuffer
+  char buf[8];
+  sprintf( buf, "%dx", combo_ );
+
+  // Draw text
+  renderer_->drawText( left_bound - 2, top_bound, "Combo:" );
+  renderer_->drawText( left_bound, top_bound + 10, buf );
 }
