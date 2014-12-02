@@ -229,6 +229,11 @@ void setup() {
 
 	}
 
+	// Check if the user has pressed select to start a new game
+	if( inputHandler->select() ) {
+	  state = MENU_STATE;
+	}
+
       }
       break;
 
