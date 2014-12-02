@@ -4,6 +4,7 @@
 #include "game.h"
 #include "input.h"
 #include "menu.h"
+#include "connection.h"
 
 uint8_t state;
 
@@ -26,6 +27,7 @@ Game *gameInstance;
 Renderer *renderer;
 InputHandler *inputHandler;
 Menu *menu;
+Connection *connection;
 
 void startSinglePlayerGame() {
   
@@ -33,13 +35,29 @@ void startSinglePlayerGame() {
   if( gameInstance ) delete gameInstance;
 
   // Create a new game
-  gameInstance = new Game( renderer );
+  gameInstance = new Game( renderer, NULL );
 
   // Mark the game as not over
   wasGameOverLastFrame = false;
 
   // Set the state to singleplayer game state
   state = GAME_PLAY_SINGLEPLAYER_STATE;
+}
+
+void startMultiPlayerGame() {
+  
+  // Dealloc old game
+  if( gameInstance ) delete gameInstance;
+
+  // Create a new game
+  gameInstance = new Game( renderer, connection );
+
+  // Mark the game as not over
+  wasGameOverLastFrame = false;
+  
+  // Set the state to multiplayer game state
+  state = GAME_PLAY_MULTIPLAYER_STATE;
+
 }
 
 // Draw the FPS
@@ -87,6 +105,9 @@ void setup() {
   // Create the input handler
   inputHandler = new InputHandler();
 
+  // Create the connection controller
+  connection = new Connection( &Serial3 );
+
   // Set the initial state
   state = MENU_STATE;
 
@@ -106,6 +127,9 @@ void setup() {
 
     // Read the input every frame
     inputHandler->readInput( );
+
+    // read the serial every frame
+    //serialHandler->readSerial();
 
     // The time at start of frame
     unsigned long frameStartTime = millis();
@@ -130,8 +154,17 @@ void setup() {
 	case 0:
 	  startSinglePlayerGame();
 	  break;
-	// Starting a two player game
+	// Starting a two player game (host)
 	case 1:
+	  // display waiting screen
+	  connection->handshakeServer();
+	  startMultiPlayerGame();
+	  break;
+	// Starting a two player game (join)
+	case 2:
+	  // display waiting screen
+	  connection->handshakeClient();
+	  startMultiPlayerGame();
 	  break;
 	}
 

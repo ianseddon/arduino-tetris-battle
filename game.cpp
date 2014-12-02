@@ -20,7 +20,7 @@ unsigned long fallDelay = REGULAR_FALL_DELAY;
   Called whenever we create a new game
   Takes a pointer to an instance of a renderer to be used to do any drawing
 */
-Game::Game ( Renderer *renderer ) : renderer_(renderer) {
+Game::Game ( Renderer *renderer, Connection *connection ) : renderer_(renderer), connection_(connection) {
 
   // Make sure we set the game to not over
   gameOver_ = false;

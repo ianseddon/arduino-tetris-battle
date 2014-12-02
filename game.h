@@ -11,13 +11,14 @@
 #include "stage.h"
 #include "block.h"
 #include "renderer.h"
+#include "connection.h"
 
 class Game {
   
 public:
   
   // Constructor
-  Game( Renderer *renderer );
+  Game( Renderer *renderer, Connection *connection );
   // Destructor
   ~Game();
 
@@ -49,6 +50,7 @@ public:
 private:
 
   Renderer *renderer_; // The pointer to the renderer instance
+  Connection *connection_; // The pointer to the connection instance
   Stage *stage_;       // The pointer to the stage instance
   Block *block_;       // The pointer to the block instance
   Block *nextBlock_;   // The pointer to the next block instance
