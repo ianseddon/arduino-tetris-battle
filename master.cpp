@@ -93,6 +93,11 @@ void drawBanner( const char * text ) {
   renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, text );
 }
 
+void drawWait() {
+  renderer->wipeScreen();
+  renderer->drawText( 35, 72, "Waiting..." );
+}
+
 void setup() {
 
   // Set up serial logging
@@ -158,13 +163,13 @@ void setup() {
 	  break;
 	// Starting a two player game (host)
 	case 1:
-	  // display waiting screen
+	  drawWait();
 	  connection->handshakeServer();
 	  startMultiPlayerGame();
 	  break;
 	// Starting a two player game (join)
 	case 2:
-	  // display waiting screen
+	  drawWait();
 	  connection->handshakeClient();
 	  startMultiPlayerGame();
 	  break;
