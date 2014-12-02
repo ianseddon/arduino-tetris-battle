@@ -71,7 +71,7 @@ void Menu::draw() {
       break;
     case 2:
       // Draw selection pip
-      renderer_->fillRect( leftBound, 98, 3, 3, 0xF81F );
+      renderer_->fillRect( leftBound, 98, 3, 3, 0xFFE0 );
       // Erase unselected pips
       renderer_->fillRect( leftBound, 68, 3, 3, 0x0000 );
       renderer_->fillRect( leftBound, 83, 3, 3, 0x0000 );
