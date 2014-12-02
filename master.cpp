@@ -29,6 +29,7 @@ InputHandler *inputHandler;
 Menu *menu;
 
 Connection *connection;
+Connection *nulcon;
 
 void startSinglePlayerGame() {
   
@@ -36,7 +37,7 @@ void startSinglePlayerGame() {
   if( gameInstance ) delete gameInstance;
 
   // Create a new game
-  gameInstance = new Game( renderer, NULL );
+  gameInstance = new Game( renderer, nulcon );
 
   // Mark the game as not over
   wasGameOverLastFrame = false;
@@ -108,6 +109,9 @@ void setup() {
 
   // Create the connection controller
   connection = new Connection( &Serial3 );
+
+  // Create a null connection to pass to singleplayer games
+  nulcon = new Connection( NULL );
 
   // Set the initial state
   state = MENU_STATE;

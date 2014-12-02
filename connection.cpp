@@ -91,6 +91,8 @@ void Connection::handshakeClient() {
 
 int Connection::read() {
 
+  if( !serial_ ) return 0;
+
   if( serial_->available() ) {
     return (int) serial_->read();
   }
@@ -100,6 +102,8 @@ int Connection::read() {
 }
 
 void Connection::write( int data ) {
+
+  if( !serial_ ) return;
 
   serial_->write( data );
 
