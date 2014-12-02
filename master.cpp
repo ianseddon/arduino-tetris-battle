@@ -29,7 +29,6 @@ InputHandler *inputHandler;
 Menu *menu;
 
 Connection *connection;
-const int gameOverByte = -1;
 
 void startSinglePlayerGame() {
   
@@ -81,7 +80,7 @@ void drawFPS( unsigned long dt ) {
 }
 
 // Draw the game over banner
-void drawGameOver() {
+void drawBanner( const char * text ) {
   int bannerHeight = 30;
 
   // Draw the game over banner over top of the stage
@@ -90,7 +89,7 @@ void drawGameOver() {
   renderer->drawHLine( 1, (gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - (bannerHeight / 2) + bannerHeight + 1, gameInstance->stage()->width() * gameInstance->stage()->blockWidth() - 1, 0xCCDD00 );
   
   // Draw the game over text
-  renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, "Game Over" );
+  renderer->drawText( 13, ( gameInstance->stage()->height() * gameInstance->stage()->blockHeight() / 2 ) - 3, text );
 }
 
 void setup() {
@@ -190,7 +189,7 @@ void setup() {
 
 	if( !wasGameOverLastFrame ) {
 
-	  drawGameOver();
+	  drawBanner( "Game Over" );
 	  
 	  wasGameOverLastFrame = true;
 
@@ -206,7 +205,7 @@ void setup() {
       break;
 
     case GAME_PAUSE_SINGLEPLAYER_STATE:
-
+      Serial.print("Pause");
       break;
 
     // Called each frame of the multiplayer game
@@ -219,20 +218,24 @@ void setup() {
       }
       else {
 
-	if( !wasGameOverLastFrame ) {
+	Serial.print("Game over");
+
+	//if( !wasGameOverLastFrame ) {
+
+	drawBanner( "Game Over" );
 
 	  connection->write( Connection::gameOverByte );
 
-	  drawGameOver();
-
 	  wasGameOverLastFrame = true;
 
-	}
+	  //}
 
       }
       break;
 
     }
+
+    //Serial.println("frame");
 
     int dt = frameStartTime - lastFrameTime;
 

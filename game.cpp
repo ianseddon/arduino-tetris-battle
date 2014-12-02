@@ -232,8 +232,9 @@ void Game::update( unsigned long dt ) {
   if( rData > 0 ) {
     stage_->pushRows( rData );
   }
-  else if( rData == -1 ) {
+  else if( rData == Connection::gameOverByte ) {
     // End game
+    Serial.println("Game should be over");
     gameOver_ = true;
   }
 
