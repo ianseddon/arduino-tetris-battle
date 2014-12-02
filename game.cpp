@@ -228,15 +228,17 @@ void Game::update( unsigned long dt ) {
   // Check for serial data to push rows
   int rData = connection_->read();
   
+  Serial.print( rData );
+
   // If we received a positive integer, push that many rows
   if( rData > 0 ) {
     stage_->pushRows( rData );
   }
   else if( rData == Connection::gameOverByte ) {
-    // End game
-    Serial.println("Game should be over");
     gameOver_ = true;
   }
+
+  Serial.println( "a" );
 
 }
 
