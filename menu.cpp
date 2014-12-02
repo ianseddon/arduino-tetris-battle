@@ -28,6 +28,7 @@ void Menu::handleInput( InputHandler *ih ) {
 
 void Menu::redraw() {
   needToDraw_ = true;
+  renderer_->wipeScreen();
   draw();
 }
 
