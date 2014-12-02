@@ -239,7 +239,7 @@ void setup() {
 
 	  // Display a game won message
 	  if( gameInstance->won() ) {
-	    drawBanner( "You Win!");
+	    drawBanner( "You Win!" );
 	  }
 	  // Display a game lost message
 	  else {
@@ -271,8 +271,7 @@ void setup() {
       drawFPS( dt );
 
     // Delay to enforce a constant frame rate
-    //delay( max( 30 - dt, 0 ) );
-    delay( 30 );
+    delay( max( 30 - dt, 0 ) );
 
     // Update lastFrameTime
     lastFrameTime = frameStartTime;
