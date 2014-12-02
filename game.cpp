@@ -167,7 +167,7 @@ void Game::handleInput( InputHandler *ih ) {
 
   // Handle joystick select
   if( ih->select() ) {
-    stage_->pushRows(1);
+    
   }
 
 }
