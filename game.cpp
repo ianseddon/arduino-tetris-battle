@@ -6,21 +6,19 @@
 // Movement timing
 unsigned long lastRotateTime;
 unsigned long rotateDelay = 150;
-
 unsigned long lastMoveTime;
 unsigned long moveDelay = 100;
 
+// Gravity timing
 unsigned long lastFallTime;
 const unsigned long REGULAR_FALL_DELAY = 400;
 const unsigned long FAST_FALL_DELAY = 50;
 unsigned long fallDelay = REGULAR_FALL_DELAY;
 
-unsigned long lastFpsDrawTime;
-unsigned long fpsDrawDelay = 200;
-
 /*
   The constructor for the game object
   Called whenever we create a new game
+  Takes a pointer to an instance of a renderer to be used to do any drawing
 */
 Game::Game ( Renderer *renderer ) : renderer_(renderer) {
 
@@ -31,17 +29,25 @@ Game::Game ( Renderer *renderer ) : renderer_(renderer) {
   stage_ = new Stage();
 
   // Seed the random number generator and generate first block
-  randomSeed( analogRead( 10 ) );
   int shape = random( 0, 7 );
 
   // Create a new block for the game
   block_ = new Block( 5, 0, colors[shape], shape );
 
+  // Generate shape of second block
+  shape = random( 0, 7 );
+
+  // Create the next block
+  nextBlock_ = new Block( 5, 0, colors[shape], shape );
+  
   // Register block with stage
   stage_->block( block_ );
 
   // Do initial render of stage
   renderer_->initialRender( stage_ );
+
+  // Draw the next block
+  drawNextBlock();
 
 }
 
@@ -182,11 +188,13 @@ void Game::update( unsigned long dt ) {
       // Dealloc old block
       delete block_;
 
-      // Assign the block a random type
-      int bType = random( 0, 7 );
-
       // Create new block
-      block_ = new Block( 5, 0, colors[bType], bType );
+      block_ = nextBlock_; //new Block( 5, 0, colors[nextBlock_], nextBlock_ );
+
+      // Assign the next block a random type
+      int shape = random( 0, 7 );
+
+      nextBlock_ = new Block( 5, 0, colors[shape], shape );
 
       // Register new block with stage
       stage_->block( block_ );
@@ -195,6 +203,9 @@ void Game::update( unsigned long dt ) {
       if( stage_->collides( block_ ) ) {
 	gameOver_ = true;
       }
+
+      // Draw the next block to be spawned
+      drawNextBlock();
 
     }
 
@@ -213,4 +224,28 @@ void Game::draw() {
   // send the stage to the renderer to be displayed to screen
   renderer_->render( stage_ );
 
+}
+
+/*
+  Draws the next block to be spawned
+ */
+void Game::drawNextBlock() {
+
+  int left_bound = 7 + stage_->width() * stage_->blockWidth();
+  int top_bound = 30;
+
+  // Erase
+  renderer_->fillRect( left_bound, top_bound, 128 - left_bound, 4 * stage_->blockHeight(), 0x0000 );
+
+  // Draw the text
+  renderer_->drawText( left_bound - 2, top_bound - 11, "Next:" );
+
+  // Display the next block to be created
+  for( int x = -2; x < 2; x++ ) {
+    for( int y = -1; y < 3; y++ ) {
+      if( nextBlock_->intersects( nextBlock_->x() + x, nextBlock_->y() + y ) ) {
+	renderer_->fillRect( left_bound + (x+2) * stage_->blockWidth(), top_bound + y * stage_->blockHeight(), stage_->blockWidth() - 1, stage_->blockHeight() - 1, colors[nextBlock_->shape()] );
+      }
+    }
+  }
 }

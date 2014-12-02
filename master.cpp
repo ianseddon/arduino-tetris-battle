@@ -28,13 +28,17 @@ InputHandler *inputHandler;
 Menu *menu;
 
 void startSinglePlayerGame() {
-
-  Serial.println("Starting singleplayer game");
   
+  // Dealloc old game
   if( gameInstance ) delete gameInstance;
 
+  // Create a new game
   gameInstance = new Game( renderer );
+
+  // Mark the game as not over
   wasGameOverLastFrame = false;
+
+  // Set the state to singleplayer game state
   state = GAME_PLAY_SINGLEPLAYER_STATE;
 }
 
@@ -56,6 +60,7 @@ void drawFPS( unsigned long dt ) {
   lastDrewFPS = millis();
 }
 
+// Draw the game over banner
 void drawGameOver() {
   int bannerHeight = 30;
 
@@ -105,21 +110,27 @@ void setup() {
     // The time at start of frame
     unsigned long frameStartTime = millis();
 
+    // Differ logic based on game state
     switch ( state ) {
       
     // Called each frame of the menu state
     case MENU_STATE:
 
+      // Read the input
       menu->handleInput( inputHandler );
+
+      // Draw the menu
       menu->draw();
 
       if( inputHandler->select() ) {
 
 	// Take the appropriate action depending on which was selected
 	switch( menu->selected() ) {
+	// Starting a single player game
 	case 0:
 	  startSinglePlayerGame();
 	  break;
+	// Starting a two player game
 	case 1:
 	  break;
 	}
