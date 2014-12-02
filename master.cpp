@@ -103,6 +103,16 @@ void setup() {
   // Set up serial logging
   Serial.begin(9600);
 
+  // Generate a randomized seed for the generation of blocks
+  uint16_t generatedSeed = 0;
+  for ( uint32_t i = 0; i < 16; i++ ) {
+    generatedSeed += analogRead(10) & 1;
+    generatedSeed <<= 1;
+    delay(3);
+  }
+  // Seed the random generation of blocks
+  randomSeed( generatedSeed );
+
   // Create the renderer and hand off the display reference to it
   renderer = new Renderer( tft );
 
@@ -224,17 +234,22 @@ void setup() {
       }
       else {
 
+	// Only draw for the first frame of game over state to avoid unnecessary draws
 	if( !wasGameOverLastFrame ) {
 
+	  // Display a game won message
 	  if( gameInstance->won() ) {
 	    drawBanner( "You Win!");
 	  }
+	  // Display a game lost message
 	  else {
 	    drawBanner( "You Lost :(" );
 	  }
 
+	  // Send the game over byte to the other player
 	  connection->write( Connection::gameOverByte );
 
+	  // Make sure we know the game was over last frame
 	  wasGameOverLastFrame = true;
 
 	}
