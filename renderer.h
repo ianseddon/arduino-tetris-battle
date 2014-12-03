@@ -4,6 +4,11 @@
   Takes game objects and displays them to screen
   Also handles all drawing calls for anything else 
   that might need to be displayed
+
+  Wraps an instance of the Adafruit TFT object,
+  could be easily ported to a different rendering medium
+  by changing Adafruit TFT specific library functions
+  to say OpenGL rendering functions or another framework
  */
 #ifndef RENDERER_H
 #define RENDERER_H

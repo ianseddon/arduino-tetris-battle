@@ -1,13 +1,15 @@
+/*
+  Connection Controller
+  --------------------------
+  The controller for serial communcation to another arduino
+
+  Wraps a Serial (HardwareSerial*) reference and handles receiving and transmitting across that port
+ */
+
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
 #include <Arduino.h>
-
-/*
-  The controller for serial communcation to another arduino
-
-  Wraps a Serial (HardwareSerial) object and handles receiving and transmitting across that port
- */
 
 class Connection {
 

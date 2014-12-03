@@ -1,3 +1,11 @@
+/*
+  Menu Class
+  -------------------
+  Handles the drawing of the menu,
+  selection states, and passing back
+  encapsulated selected values to the
+  higher level classes for logic application
+ */
 #ifndef MENU_H
 #define MENU_H
 

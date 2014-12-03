@@ -6,6 +6,11 @@
   of the blocks on the game area
   and composes the data into a buffer
   to be rendered by the Renderer
+
+  Buffer format:
+   Array of 16 bit unsigned integers
+   representing the block colors for
+   that position on the stage
  */
 #ifndef STAGE_H
 #define STAGE_H
